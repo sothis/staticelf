@@ -1,10 +1,7 @@
 #!/bin/bash
 
-#echo `pwd`/lib
-
-PREFIX="`pwd`/local"
-
-cd musl && ./configure --prefix=$PREFIX --enable-shared=no > /dev/null && cd .. && make -j2 -s -C musl && make -s -C musl install
+WD="`pwd`"
+cd musl && CFLAGS=-O2 ./configure --prefix="$WD/local" --enable-shared=no > /dev/null && cd .. && make -j2 -C musl && make -s -C musl install
 
 gcc -specs=./local/lib/musl-gcc.specs -static -O2 -fomit-frame-pointer -o test main.c
 
