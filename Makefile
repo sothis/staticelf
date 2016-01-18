@@ -124,6 +124,7 @@ OBJECTS		:= $(patsubst %.c, $(BUILDDIR)/.obj/%_C.o, $(C_SRC))
 print_ld	:= echo $(eflags) "LD   "
 print_cc	:= echo $(eflags) "CC   "
 print_strip	:= echo $(eflags) "STRIP"
+print_build	:= echo $(eflags) "BUILD"
 
 # targets
 .PHONY: all help debug release Debug Release clean
@@ -156,6 +157,7 @@ clean-recursive:
 	@-rm -rf $(OUTDIR)
 
 $(BUILDDIR)/musl/lib/musl-gcc.specs:
+	$(print_build) ./musl
 	cd musl && \
 	CFLAGS="-O2 -fomit-frame-pointer" \
 	./configure --prefix="$(MUSLPREFIX)" \
