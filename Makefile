@@ -1,6 +1,7 @@
 PROJECT_NAME		:= static
 C_STD			:= c99
 
+VERSION		:= $(shell ./version)
 MAKEFILE_DIR	:= $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 UNAMEEXISTS	:= $(shell uname > /dev/null 2>&1; echo $$?)
 GCCEXISTS	:= $(shell gcc --version > /dev/null 2>&1; echo $$?)
@@ -10,6 +11,9 @@ GCCEXISTS	:= $(shell gcc --version > /dev/null 2>&1; echo $$?)
 # paths on windows
 PREFIX		:= ./build
 
+ifeq ($(VERSION),)
+$(error can't determine version string)
+endif
 ifeq ($(CONF), debug)
 	DEBUG		:= Yes
 endif
@@ -77,7 +81,7 @@ SRC		+= ./src/main.c
 
 
 # preprocessor definitions
-#DEFINES	+= -DVERSION='"$(VERSION)"'
+DEFINES		+= -DVERSION='"$(VERSION)"'
 DEFINES		+= -D$(PLATFORM)=1
 DEFINES		+= -D$(TOOLCHAIN)=1
 
