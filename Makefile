@@ -155,6 +155,9 @@ clean:
 clean-recursive:
 	@echo "deleting '$(OUTDIR)'"
 	@-rm -rf $(OUTDIR)
+	@echo "cleaning './musl'"
+	@GIT_DIR=./musl/.git git reset --hard > /dev/null
+	@GIT_DIR=./musl/.git git clean -xdff > /dev/null
 
 $(BUILDDIR)/musl/lib/musl-gcc.specs:
 	$(print_build) ./musl
