@@ -101,7 +101,7 @@ DEFINES		+= -D_REENTRANT=1
 
 OUTDIR		:= $(PREFIX)
 BUILDDIR	:= $(OUTDIR)/$(TOOLCHAIN)_$(CONF)
-MUSLPREFIX	:= $(abspath $(BUILDDIR)/musl)
+MUSLPREFIX	:= $(abspath $(BUILDDIR)/.musl)
 
 # common flags
 CFLAGS		:= -specs=$(MUSLPREFIX)/lib/musl-gcc.specs
@@ -164,7 +164,7 @@ clean-recursive:
 	@GIT_DIR=./musl/.git git reset --hard > /dev/null
 	@GIT_DIR=./musl/.git git clean -xdff > /dev/null
 
-$(BUILDDIR)/musl/lib/musl-gcc.specs:
+$(MUSLPREFIX)/lib/musl-gcc.specs:
 	$(print_build) ./musl
 	cd musl && \
 	CFLAGS="-O3 -fomit-frame-pointer -march=native" \
@@ -182,7 +182,7 @@ ifdef HAVE_CLANG
 	$(MAKE) $(VERB) -C '$(MAKEFILE_DIR)' TOOLCHAIN=clang musl-recursive
 endif
 
-musl-recursive: $(BUILDDIR)/musl/lib/musl-gcc.specs
+musl-recursive: $(MUSLPREFIX)/lib/musl-gcc.specs
 ifdef HAVE_GCC
 	$(MAKE) $(VERB) -C '$(MAKEFILE_DIR)' TOOLCHAIN=gcc final-all-recursive
 endif
