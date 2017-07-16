@@ -108,6 +108,7 @@ CFLAGS		:= -specs=$(MUSLPREFIX)/lib/musl-gcc.specs
 CFLAGS		+= -std=$(C_STD)
 CFLAGS		+= -Wall
 CFLAGS		+= -g
+CFLAGS		+= -march=native
 CFLAGS		+= -static
 CFLAGS		+= -fomit-frame-pointer
 
@@ -115,7 +116,7 @@ ifdef DEBUG
 CFLAGS		+= -O0
 endif
 ifdef RELEASE
-CFLAGS		+= -O2
+CFLAGS		+= -O3
 endif
 
 LDFLAGS		:= $(CFLAGS)
@@ -166,7 +167,7 @@ clean-recursive:
 $(BUILDDIR)/musl/lib/musl-gcc.specs:
 	$(print_build) ./musl
 	cd musl && \
-	CFLAGS="-O2 -fomit-frame-pointer" \
+	CFLAGS="-O3 -fomit-frame-pointer -march=native" \
 	./configure --prefix="$(MUSLPREFIX)" \
 	--enable-shared=no > /dev/null && \
 	cd .. && \
